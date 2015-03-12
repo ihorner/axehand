@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+#testings
 
 movie = ARGV[0]
 textfile = ARGV[1]
