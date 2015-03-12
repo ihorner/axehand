@@ -9,8 +9,6 @@ textfile = ARGV[1]
 # Load text files of timecodes
 edl = []
 
-edl.push(50000000,"Video Start")
-
 edlsort = File.readlines(textfile).sort_by(&:to_i)
 File.open(textfile, "w") do |file|
 	file.puts edlsort
@@ -27,6 +25,8 @@ z = edl.length
 tempfiles = []
 cuts = []
 
+# cuts.push (5)
+
 # Make an array of the cutpoints
 edl.each_with_index do |x, index|
 	cuts << edl[index][0].to_f/10000000
@@ -34,12 +34,9 @@ end
 
 ffcutpoints = cuts.join(',')
 
-puts edl
-puts ffcutpoints
-
 # Write out new keyframes at cut points and Cut the video into pieces, this is my last resort
-system "ffmpeg -i #{movie} -force_key_frames #{ffcutpoints} -codec copy -map 0 \
- -f segment -segment_list out.ffcat -segment_times #{ffcutpoints} -segment_time_delta 0.05 #{moviename}.%03d.mp4"
+# system "ffmpeg -i #{movie} -force_key_frames #{ffcutpoints} -codec copy -map 0 \
+#  -f segment -segment_list out.ffcat -segment_times #{ffcutpoints} -segment_time_delta 0.05 #{moviename}.%03d.mp4"
 
 # Add first segment to concatlist.ffcat and tempfiles array
 		File.open("concatlist.ffcat", 'a') { |f| 
@@ -51,7 +48,7 @@ tempfiles.push("#{moviename}.000.mp4")
 edl.each_with_index { |val, index|
 	indexx = index+1
 	if
-		edl[index][1] != ( "Commercial" || "Going Online" || "Going Offline" ) and index+1 < z
+		edl[index][1] != "Commercial" and edl[index][1] != "Going Online" and edl[index][1] != "Going Offline" and index+1 < z
 		File.open("concatlist.ffcat", 'a') { |f| 
 			f.puts "file #{moviename}.#{"%03d" % indexx}.mp4"
 		}
