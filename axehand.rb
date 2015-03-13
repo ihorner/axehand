@@ -6,24 +6,16 @@ textfile = ARGV[1]
 # textfile = "2015-01-21_120323114.txt"
 # movie = "2015-01-21_120323114.mp4"
 
-# Load text files of timecodes
 edl = []
-
-edlsort = File.readlines(textfile).sort_by(&:to_i)
-File.open(textfile, "w") do |file|
-	file.puts edlsort
-end
-
-File.open(textfile) do |f|
-		f.each_line do |line|
-		edl << line.strip.split(/:/)
-	end
-end
-
 moviename = movie[1..-5]
 z = edl.length
 tempfiles = []
 cuts = []
+
+# Load text files of timecodes and sort
+File.readlines(textfile).sort_by(&:to_i).each do |f|
+	edl << f.strip.split(/:/)
+end
 
 # cuts.push (5)
 
