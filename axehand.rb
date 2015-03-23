@@ -4,10 +4,10 @@ movie = ARGV[0]
 textfile = ARGV[1]
 
 # textfile = "2015-01-21_120323114.txt"
-# movie = "2015-01-21_120323114.mp4"
+# movie = "2015-01-21_120323114.ts"
 
 edl = []
-moviename = movie[1..-5]
+moviename = movie[0..-5]
 tempfiles = []
 cuts = []
 
@@ -20,7 +20,7 @@ z = edl.length
 
 # cuts.push (5)
 
-edl[0][0] = edl[0][0].to_i-50000000
+# edl[0][0] = edl[0][0].to_i-50000000
 
 # Add 5s Buffer to OP, Commercial and ED
 edl.each_with_index { |val, index|
@@ -40,26 +40,26 @@ ffcutpoints = cuts.join(',')
 
 
 # Write out new keyframes at cut points and Cut the video into pieces, this is my last resort
-system "ffmpeg -i #{movie} -force_key_frames #{ffcutpoints} -codec copy -map 0 \
- -f segment -segment_list out.ffcat -segment_times #{ffcutpoints} -segment_time_delta 0.05 #{moviename}.%03d.mp4"
+system "ffmpeg -i #{movie} -force_key_frames #{ffcutpoints} -c copy -map 0 \
+ -f segment -segment_list out.ffcat -segment_times #{ffcutpoints} -segment_time_delta 0.05 -bsf:v h264_mp4toannexb #{moviename}.%03d.ts"
 
 # Remove first segment to concatlist.ffcat and tempfiles array
 		# File.open("concatlist.ffcat", 'a') { |f| 
-		# 	f.puts "file #{moviename}.000.mp4"
+		# 	f.puts "file #{moviename}.000.ts"
 		# }
 
-tempfiles.push("#{moviename}.000.mp4")
+tempfiles.push("#{moviename}.000.ts")
 
 # Add non-commercial segments to concatlist amd tempfiles array
 edl.each_with_index { |val, index|
 	indexx = index+1
 	if edl[index][1] != "Commercial" and edl[index][1] != "Going Online" and edl[index][1] != "Going Offline" and index+1 < z
 		File.open("concatlist.ffcat", 'a') { |f| 
-			f.puts "file #{moviename}.#{"%03d" % indexx}.mp4"
+			f.puts "file #{moviename}.#{"%03d" % indexx}.ts"
 		}
-		tempfiles.push("#{moviename}.#{"%03d" % indexx}.mp4")
+		tempfiles.push("#{moviename}.#{"%03d" % indexx}.ts")
 	else
-		tempfiles.push("#{moviename}.#{"%03d" % indexx}.mp4")
+		tempfiles.push("#{moviename}.#{"%03d" % indexx}.ts")
 	end
 }
 
@@ -67,16 +67,16 @@ endtime = edl[z-1][0].to_f/10000000
 
 # Add last segment to concatlist
 # if edl[z][1] = "Going Offline"
-# 	tempfiles.push("#{moviename}.#{"%03d" % z}.mp4")
+# 	tempfiles.push("#{moviename}.#{"%03d" % z}.ts")
 # else
 # 	File.open("concatlist.ffcat", 'a') { |f| 
-# 			f.puts "file #{moviename}.#{"%03d" % z}.mp4"
+# 			f.puts "file #{moviename}.#{"%03d" % z}.ts"
 # }
-# tempfiles.push("#{moviename}.#{"%03d" % z}.mp4")
+# tempfiles.push("#{moviename}.#{"%03d" % z}.ts")
 # end
 
 # Stitch it all together
-system "ffmpeg -f concat -i concatlist.ffcat -c copy #{moviename}.cut.mp4"
+system "ffmpeg -f concat -i concatlist.ffcat -bsf:a aac_adtstoasc -c copy #{moviename}.cut.mp4"
 
 # Add concatlists to tempfiles array
 tempfiles.push("concatlist.ffcat")
