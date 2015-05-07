@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 
-movie = ARGV[0]
-textfile = ARGV[1]
+
+textfile = ARGV[0]
+movie = ARGV[1]
 
 # textfile = "2015-01-21_120323114.txt"
 # movie = "2015-01-21_120323114.ts"
@@ -82,7 +83,7 @@ system "ffmpeg -f concat -i concatlist.ffcat -bsf:a aac_adtstoasc -c copy #{movi
 tempfiles.push("concatlist.ffcat")
 tempfiles.push("out.ffcat")
 
-# Remove temp files
-# tempfiles.each { |x| 
-# File.delete(x)
-# }
+Remove temp files
+tempfiles.each { |x| 
+File.delete(x)
+}
