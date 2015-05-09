@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
-textfile = ARGV[0]
-movie = ARGV[1]
+movie = ARGV[0]
+textfile = ARGV[1]
 
 moviefull = movie.gsub("\ ", "\\\ ")
 
