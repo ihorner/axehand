@@ -16,6 +16,6 @@ Drag a single mp4 file and it's corresponding text file pair onto the Axehand ic
 axehand@tiltyhouse.com
 
 # Watch Our Stuff
-Watch us stream live at [LoadingReadyLive](http://www.twitch.tv/loadingreadyrunr)
-Watch our other stuff at [LoadingReadyRun](http://loadingreadyrun.com)
-Support us at [Patreon.com/LoadingReadyRun](http://patreon.com/loadingreadyrun)
+- Watch us stream live at [LoadingReadyLive](http://www.twitch.tv/loadingreadyrunr)
+- Watch our other stuff at [LoadingReadyRun](http://loadingreadyrun.com)
+- Support us at [Patreon.com/LoadingReadyRun](http://patreon.com/loadingreadyrun)
